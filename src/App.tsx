@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 
 const App: React.FC = () => {
   return (
-    <main className="h-full w-full flex flex-col lg:flex-row inset-0 fixed">
+    <main className="h-full w-full flex flex-col lg:flex-row inset-0 lg:fixed">
       {/* Sidebar Section */}
       <section
         className="w-full lg:w-1/2 h-[100vh]"
@@ -30,7 +30,7 @@ const App: React.FC = () => {
 
           {/* Navigation */}
           <nav>
-            <ul className="flex flex-col gap-1.5 text-5xl sm:text-6xl md:text-7xl font-bold font-ojuju">
+            <ul className="flex flex-col gap-2 text-5xl sm:text-6xl md:text-7xl font-bold font-ojuju">
               {["ABOUT", "CONTACT", "FAQS", "RATES"].map((item) => (
                 <li key={item}>
                   <NavLink
@@ -47,7 +47,7 @@ const App: React.FC = () => {
       </section>
 
       {/* Main Content Area */}
-      <section className="w-1/2 h-[100vh] overflow-y-scroll p-6 lg:p-10">
+      <section className="w-full lg:w-1/2 h-[100vh] lg:overflow-y-scroll p-6 lg:p-10">
         <Outlet />
       </section>
     </main>
