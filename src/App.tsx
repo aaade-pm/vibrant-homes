@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 
 const App: React.FC = () => {
   return (
-    <main className="h-full w-full flex flex-col lg:flex-row">
+    <main className="h-full w-full flex flex-col lg:flex-row inset-0 fixed">
       {/* Sidebar Section */}
       <section
         className="w-full lg:w-1/2 h-[100vh]"
@@ -47,7 +47,7 @@ const App: React.FC = () => {
       </section>
 
       {/* Main Content Area */}
-      <section className="w-1/2 h-[100vh]  p-6 lg:p-10">
+      <section className="w-1/2 h-[100vh] overflow-y-scroll p-6 lg:p-10">
         <Outlet />
       </section>
     </main>
