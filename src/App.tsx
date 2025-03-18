@@ -15,7 +15,7 @@ const App: React.FC = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="h-full w-full flex flex-col justify-between p-6 lg:p-10 bg-black/75 text-vibrantNeutral ">
+        <div className="h-full w-full flex flex-col justify-between p-6 lg:p-10 bg-black/20 text-vibrantNeutral ">
           {/* Logo & Tagline */}
           <div>
             <NavLink to="/">
