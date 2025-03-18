@@ -75,7 +75,7 @@ const HomePage: React.FC = () => {
               className="w-full h-75 relative"
             >
               <div className="h-full w-full bg-black/32">
-                <NavLink to={`/${home.link}`}>
+                <NavLink to={`/${home.link}`} state={{ image: home.image }}>
                   <button className="absolute top-6 left-6 border-2 border-vibrantNeutral text-vibrantNeutral font-bold cursor-pointer p-2 font-jetbrains">
                     {home.location}
                   </button>

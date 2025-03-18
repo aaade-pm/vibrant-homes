@@ -186,7 +186,7 @@ const LocationDetails: React.FC = () => {
 
   const { title, description, amenities, areaSummary } = locationDetail;
   return (
-    <section className="w-full h-screen flex flex-col bg-gray-100">
+    <section className="w-full h-screen flex flex-col">
       {/* <div className="w-full h-96 object-cover">
         <img src={image} alt={title} className="w-full h-full" />
       </div> */}
@@ -225,6 +225,7 @@ const LocationDetails: React.FC = () => {
               to={`/${previousDetail.locationInfo
                 .toLowerCase()
                 .replace(/ /g, "-")}`}
+              state={{ image: previousDetail.image }}
               className="text-lg sm:text-xl md:text-2xl mb-3 font-bold font-ojuju text-vibrantGreen"
             >
               PREVIOUS: {previousDetail.title}
@@ -242,6 +243,7 @@ const LocationDetails: React.FC = () => {
               to={`/${nextDetail.locationInfo
                 .toLowerCase()
                 .replace(/ /g, "-")}`}
+              state={{ image: nextDetail.image }}
               className="text-lg sm:text-xl md:text-2xl mb-3 font-bold font-ojuju text-vibrantGreen"
             >
               NEXT: {nextDetail.title}
