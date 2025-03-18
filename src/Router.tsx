@@ -8,6 +8,7 @@ const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const FAQPage = lazy(() => import("./pages/FAQPage"));
 const RatesPage = lazy(() => import("./pages/RatesPage"));
+const LocationDetails = lazy(() => import("./pages/LocationDetails"));
 
 const routes = [
   {
@@ -44,6 +45,13 @@ const routes = [
     title: "Rates - Vibrant Homes®",
     description:
       "Explore our flexible and competitive pricing options. Whether you’re looking for a weekend getaway or a long-term stay, Vibrant Homes® offers rates that suit every budget while maintaining top-tier quality and comfort.",
+  },
+  {
+    path: "/:location",
+    element: <LocationDetails />,
+    title: "Details - Vibrant Homes®",
+    description:
+      "Discover the best of Vibrant Homes® in this location. From stunning views to luxurious amenities, find everything you need to know about this unique space.",
   },
 ];
 

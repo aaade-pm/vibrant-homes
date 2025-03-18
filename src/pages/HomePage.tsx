@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 type HomeData = {
   location: string;
@@ -74,9 +75,11 @@ const HomePage: React.FC = () => {
               className="w-full h-75 relative"
             >
               <div className="h-full w-full bg-black/32">
-                <button className="absolute top-6 left-6 border-2 border-vibrantNeutral text-vibrantNeutral font-bold cursor-pointer p-2 font-jetbrains">
-                  {home.location}
-                </button>
+                <NavLink to={`/${home.link}`}>
+                  <button className="absolute top-6 left-6 border-2 border-vibrantNeutral text-vibrantNeutral font-bold cursor-pointer p-2 font-jetbrains">
+                    {home.location}
+                  </button>
+                </NavLink>
               </div>
             </div>
           ))}
