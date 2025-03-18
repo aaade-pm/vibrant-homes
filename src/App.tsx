@@ -1,7 +1,13 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 const App: React.FC = () => {
+  const { pathname } = useLocation();
+  const pageRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    pageRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
   return (
     <main className="h-full w-full flex flex-col lg:flex-row inset-0 lg:fixed">
       {/* Sidebar Section */}
@@ -47,7 +53,10 @@ const App: React.FC = () => {
       </section>
 
       {/* Main Content Area */}
-      <section className="w-full lg:w-1/2 h-[100vh] lg:overflow-y-scroll p-6 lg:p-10">
+      <section
+        ref={pageRef}
+        className="w-full lg:w-1/2 h-[100vh] lg:overflow-y-scroll p-6 lg:p-10"
+      >
         <Outlet />
       </section>
     </main>
