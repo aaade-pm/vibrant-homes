@@ -88,7 +88,7 @@ const FAQPage: React.FC = () => {
   };
 
   return (
-    <section className="w-full py-10 text-vibrantGreen font-jetbrains">
+    <section className="w-full text-vibrantGreen font-jetbrains">
       <h1 className="text-3xl sm:text-4xl md:text-5xl mb-10 font-bold font-ojuju">
         FAQs
       </h1>
