@@ -1,11 +1,71 @@
 import React from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SplitType from "split-type";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const App: React.FC = () => {
   const location = useLocation();
   const { pathname } = location;
   const imageFromState = location.state?.image;
   const pageRef = React.useRef<HTMLDivElement>(null);
+  const splitTextRef = React.useRef<HTMLHeadingElement>(null);
+  const navSplitTextRef = React.useRef<HTMLUListElement>(null);
+  const taglineRef = React.useRef<HTMLParagraphElement>(null);
+
+  const animateTagline = (tagline: Element | null) => {
+    if (!tagline) return;
+
+    const split = new SplitType(tagline as HTMLElement, { types: "words" });
+
+    if (split.words && split.words.length > 0) {
+      gsap.fromTo(
+        split.words,
+        {
+          x: -100,
+          autoAlpha: 0,
+        },
+        {
+          x: 0,
+          autoAlpha: 1,
+          duration: 0.5,
+          delay: 1.6,
+          stagger: {
+            each: 0.1,
+            from: "end",
+          },
+          ease: "power2.out",
+        }
+      );
+    }
+  };
+
+  const animateSplitText = (splitText: Element | Element[] | null) => {
+    if (!splitText) return;
+    let elements = splitText;
+    if (!Array.isArray(elements)) {
+      elements = [elements];
+    }
+    elements.forEach((el) => {
+      const split = new SplitType(el as HTMLElement, { types: "chars" });
+      gsap.from(split.chars, {
+        y: -20,
+        opacity: 0,
+        duration: 0.4,
+        stagger: 0.1,
+        ease: "back.out(1.7)",
+      });
+    });
+  };
+
+  React.useEffect(() => {
+    animateSplitText(navSplitTextRef.current);
+    animateSplitText(splitTextRef.current);
+    animateTagline(taglineRef.current);
+  }, []);
+
   React.useEffect(() => {
     pageRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
@@ -28,26 +88,33 @@ const App: React.FC = () => {
           {/* Logo & Tagline */}
           <div>
             <NavLink to="/">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl mb-3 font-extrabold font-ojuju hover:text-vibrantTextGreen transition-all">
+              <h1
+                ref={splitTextRef}
+                className="text-2xl sm:text-3xl md:text-4xl mb-3 font-extrabold font-ojuju hover:text-vibrantTextGreen transition-all"
+              >
                 VIBRANT HOMES®
               </h1>
             </NavLink>
-            <p className="text-base font-jetbrains">
+            <p ref={taglineRef} className="text-base font-jetbrains">
               A break from the ordinary.
             </p>
           </div>
 
           {/* Navigation */}
           <nav>
-            <ul className="flex flex-col gap-2 text-5xl sm:text-6xl md:text-7xl font-bold font-ojuju">
-              {["ABOUT", "CONTACT", "FAQS", "RATES"].map((item) => (
-                <li key={item}>
+            <ul
+              ref={navSplitTextRef}
+              className="flex flex-col gap-2 text-5xl sm:text-6xl md:text-7xl font-bold font-ojuju"
+            >
+              {["ABOUT", "CONTACT", "FAQS", "RATES"].map((item, i) => (
+                <li className="relative group inline-block" key={i}>
                   <NavLink
                     to={`/${item.toLowerCase()}`}
-                    className="hover:text-vibrantTextGreen transition-all"
+                    className="hover:text-vibrantTextGreen hover:ml-5 transition-all block"
                   >
                     {item}
                   </NavLink>
+                  <span className="absolute left-0 -bottom-3.5 h-[3px] w-0 bg-vibrantNeutral rounded-3xl transition-all duration-300 group-hover:w-1/2"></span>
                 </li>
               ))}
             </ul>
