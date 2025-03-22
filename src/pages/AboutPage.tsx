@@ -1,4 +1,5 @@
 import React from "react";
+import { pageIntroAnimation } from "../animations/pageIntroAnimation";
 
 const aboutContent = [
   <>
@@ -65,20 +66,31 @@ const aboutContent = [
 ];
 
 const AboutPage: React.FC = () => {
+  const titleRef = React.useRef<HTMLHeadingElement>(null);
+  const contentRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    pageIntroAnimation(titleRef.current, contentRef.current);
+  }, []);
   return (
     <section className="w-full flex flex-col gap-4 lg:gap-7">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl mb-3 font-bold font-ojuju text-vibrantGreen">
+      <h1
+        ref={titleRef}
+        className="opacity-0 text-3xl sm:text-4xl md:text-5xl mb-3 font-bold font-ojuju text-vibrantGreen"
+      >
         About
       </h1>
 
-      {aboutContent.map((paragraph, index) => (
-        <p
-          key={index}
-          className="text-sm lg:text-base font-jetbrains text-vibrantTextGreen leading-6 lg:leading-7"
-        >
-          {paragraph}
-        </p>
-      ))}
+      <div ref={contentRef} className="opacity-0">
+        {aboutContent.map((paragraph, index) => (
+          <p
+            key={index}
+            className="text-sm lg:text-base font-jetbrains text-vibrantTextGreen leading-6 lg:leading-7"
+          >
+            {paragraph}
+          </p>
+        ))}
+      </div>
     </section>
   );
 };
