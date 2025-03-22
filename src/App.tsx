@@ -15,55 +15,66 @@ const App: React.FC = () => {
   const navSplitTextRef = React.useRef<HTMLUListElement>(null);
   const taglineRef = React.useRef<HTMLParagraphElement>(null);
 
-  const animateTagline = (tagline: Element | null) => {
-    if (!tagline) return;
+  const animationPlayed = React.useRef(false);
 
-    const split = new SplitType(tagline as HTMLElement, { types: "words" });
+  React.useEffect(() => {
+    if (animationPlayed.current) return;
+    const tl = gsap.timeline();
 
-    if (split.words && split.words.length > 0) {
-      gsap.fromTo(
-        split.words,
+    // Animate Heading Text
+    if (splitTextRef.current) {
+      const splitHeading = new SplitType(splitTextRef.current, {
+        types: "chars",
+      });
+      tl.from(splitHeading.chars, {
+        y: -20,
+        opacity: 0,
+        duration: 0.4,
+        stagger: 0.05,
+        ease: "back.out(1.7)",
+      });
+    }
+
+    // Animate Nav Text
+    if (navSplitTextRef.current) {
+      const splitNav = new SplitType(navSplitTextRef.current, {
+        types: "chars",
+      });
+      tl.from(
+        splitNav.chars,
+        {
+          y: -20,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "back.out(1.7)",
+        },
+        ">"
+      );
+    }
+
+    // Animate Tagline Text
+    if (taglineRef.current) {
+      const splitTagline = new SplitType(taglineRef.current, {
+        types: "words",
+      });
+      tl.from(
+        splitTagline.words,
         {
           x: -100,
           autoAlpha: 0,
-        },
-        {
-          x: 0,
-          autoAlpha: 1,
           duration: 0.5,
-          delay: 1.6,
           stagger: {
             each: 0.1,
             from: "end",
           },
           ease: "power2.out",
-        }
+        },
+        "-=0.2"
       );
     }
-  };
 
-  const animateSplitText = (splitText: Element | Element[] | null) => {
-    if (!splitText) return;
-    let elements = splitText;
-    if (!Array.isArray(elements)) {
-      elements = [elements];
-    }
-    elements.forEach((el) => {
-      const split = new SplitType(el as HTMLElement, { types: "chars" });
-      gsap.from(split.chars, {
-        y: -20,
-        opacity: 0,
-        duration: 0.4,
-        stagger: 0.1,
-        ease: "back.out(1.7)",
-      });
-    });
-  };
-
-  React.useEffect(() => {
-    animateSplitText(navSplitTextRef.current);
-    animateSplitText(splitTextRef.current);
-    animateTagline(taglineRef.current);
+    animationPlayed.current = true;
   }, []);
 
   React.useEffect(() => {
@@ -110,7 +121,13 @@ const App: React.FC = () => {
                 <li className="relative group inline-block" key={i}>
                   <NavLink
                     to={`/${item.toLowerCase()}`}
-                    className="hover:text-vibrantTextGreen hover:ml-5 transition-all block"
+                    className={({ isActive }) =>
+                      `${
+                        isActive
+                          ? "text-vibrantTextGreen font-bold"
+                          : "text-vibrantNeutral"
+                      } hover:translate-x-10 transition-all duration-300`
+                    }
                   >
                     {item}
                   </NavLink>
