@@ -1,5 +1,7 @@
 import React from "react";
+import gsap from "gsap";
 import { BiSolidDownArrow, BiSolidRightArrow } from "react-icons/bi";
+import { pageIntroAnimation } from "../animations/pageIntroAnimation";
 
 type FAQ = {
   question: string;
@@ -81,23 +83,46 @@ const faqs: FAQ[] = [
 ];
 
 const FAQPage: React.FC = () => {
-  const [openIndex, setOpenIndex] = React.useState<number | null>(0);
+  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+  const titleRef = React.useRef<HTMLHeadingElement>(null);
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const textRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+
+  React.useEffect(() => {
+    pageIntroAnimation(titleRef.current, contentRef.current);
+  }, []);
 
   const handleToggleFaq = (index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index));
   };
 
+  React.useEffect(() => {
+    if (openIndex === null) return;
+
+    const target = textRefs.current[openIndex];
+    if (!target) return;
+
+    gsap.fromTo(
+      target,
+      { opacity: 0.4, y: 20 },
+      { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }
+    );
+  }, [openIndex]);
+
   return (
     <section className="w-full text-vibrantGreen font-jetbrains">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl mb-10 font-bold font-ojuju">
+      <h1
+        ref={titleRef}
+        className="opacity-0 text-3xl sm:text-4xl md:text-5xl mb-10 font-bold font-ojuju"
+      >
         FAQs
       </h1>
 
-      <div className="space-y-6">
+      <div ref={contentRef} className="opacity-0">
         {faqs.map((faq, index) => (
           <div key={index}>
             <button
-              className="w-full flex place-items-center gap-3 py-2 text-left text-sm lg:text-base font-jetbrains font-bold focus:outline-none"
+              className="w-full h-full flex place-items-center gap-3 py-8 text-left text-sm lg:text-base font-jetbrains font-bold focus:outline-none"
               onClick={() => handleToggleFaq(index)}
             >
               {openIndex === index ? (
@@ -108,11 +133,17 @@ const FAQPage: React.FC = () => {
               {faq.question}
             </button>
             {openIndex === index && (
-              <div className="mt-2 text-sm lg:text-base font-jetbrains mb-6 leading-6 lg:leading-7 pt-4 border-vibrantTextGreen">
-                {faq.answer}
+              <div className="text-sm pb-6 lg:text-base font-jetbrains leading-6 lg:leading-7 border-vibrantTextGreen">
+                <div
+                  ref={(el) => {
+                    textRefs.current[index] = el;
+                  }}
+                >
+                  {faq.answer}
+                </div>
               </div>
             )}
-            <hr className="mt-6 border-vibrantTextGreen" />
+            <hr className=" border-vibrantTextGreen" />
           </div>
         ))}
       </div>
