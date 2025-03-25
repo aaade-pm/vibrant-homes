@@ -72,7 +72,7 @@ const HomePage: React.FC = () => {
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
               }}
-              className="w-full h-75 relative"
+              className="w-full h-75 relative hover:scale-105 transition-transform duration-200"
             >
               <div className="h-full w-full bg-black/32">
                 <NavLink to={`/${home.link}`} state={{ image: home.image }}>
