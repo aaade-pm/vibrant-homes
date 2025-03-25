@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
+import { pageIntroAnimation } from "../animations/pageIntroAnimation";
 
 type LocationDetails = {
   title: string;
@@ -159,6 +160,12 @@ const locationDetails: LocationDetails[] = [
 
 const LocationDetails: React.FC = () => {
   const { location } = useParams<{ location: string }>();
+  const titleRef = React.useRef<HTMLHeadingElement>(null);
+  const contentRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    pageIntroAnimation(titleRef.current, contentRef.current);
+  }, []);
 
   const normalize = (str: string) =>
     str.toLowerCase().replace(/-/g, " ").trim();
@@ -187,75 +194,77 @@ const LocationDetails: React.FC = () => {
   const { title, description, amenities, areaSummary } = locationDetail;
   return (
     <section className="w-full h-screen flex flex-col">
-      {/* <div className="w-full h-96 object-cover">
-        <img src={image} alt={title} className="w-full h-full" />
-      </div> */}
       <div className="w-full flex flex-col gap-4 lg:gap-7">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl mb-3 font-bold font-ojuju text-vibrantGreen">
+        <h1
+          ref={titleRef}
+          className="opacity-0 text-3xl sm:text-4xl md:text-5xl mb-3 font-bold font-ojuju text-vibrantGreen"
+        >
           {title}
         </h1>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 font-bold font-ojuju text-vibrantGreen">
-          Description
-        </h2>
-        <p className="text-sm lg:text-lg font-jetbrains text-vibrantTextGreen leading-6 lg:leading-9">
-          {description}
-        </p>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 font-bold font-ojuju text-vibrantGreen">
-          Amenities
-        </h2>
-        <ul className="text-lg space-y-6 pl-4">
-          {amenities.map((amenity) => (
-            <li
-              key={amenity}
-              className="text-sm lg:text-lg font-jetbrains text-vibrantTextGreen leading-6 lg:leading-9 list-disc"
-            >
-              <span className="ml-3"> {amenity}</span>
-            </li>
-          ))}
-        </ul>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 font-bold font-ojuju text-vibrantGreen">
-          Location
-        </h2>
-        <p className="text-sm lg:text-lg font-jetbrains text-vibrantTextGreen leading-6 lg:leading-9">
-          {areaSummary}
-        </p>
-        <div className="flex flex-col lg:flex-row justify-between my-10">
-          {previousDetail ? (
-            <Link
-              to={`/${previousDetail.locationInfo
-                .toLowerCase()
-                .replace(/ /g, "-")}`}
-              state={{ image: previousDetail.image }}
-              className="text-lg sm:text-xl md:text-2xl mb-3 font-bold font-ojuju text-vibrantGreen"
-            >
-              PREVIOUS: {previousDetail.title}
-            </Link>
-          ) : (
-            <Link
-              to="/"
-              className="text-lg sm:text-xl md:text-2xl mb-3 font-bold font-ojuju text-vibrantGreen"
-            >
-              Back Home
-            </Link>
-          )}
-          {nextDetail ? (
-            <Link
-              to={`/${nextDetail.locationInfo
-                .toLowerCase()
-                .replace(/ /g, "-")}`}
-              state={{ image: nextDetail.image }}
-              className="text-lg sm:text-xl md:text-2xl mb-3 font-bold font-ojuju text-vibrantGreen"
-            >
-              NEXT: {nextDetail.title}
-            </Link>
-          ) : (
-            <Link
-              to="/"
-              className="text-lg sm:text-xl md:text-2xl mb-3 font-bold font-ojuju text-vibrantGreen"
-            >
-              Back Home
-            </Link>
-          )}
+        <div ref={contentRef} className="opacity-0 space-y-4 lg:space-y-7">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 font-bold font-ojuju text-vibrantGreen">
+            Description
+          </h2>
+          <p className="text-sm lg:text-lg font-jetbrains text-vibrantTextGreen leading-6 lg:leading-9">
+            {description}
+          </p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 font-bold font-ojuju text-vibrantGreen">
+            Amenities
+          </h2>
+          <ul className="text-lg space-y-6 pl-4">
+            {amenities.map((amenity) => (
+              <li
+                key={amenity}
+                className="text-sm lg:text-lg font-jetbrains text-vibrantTextGreen leading-6 lg:leading-9 list-disc"
+              >
+                <span className="ml-3"> {amenity}</span>
+              </li>
+            ))}
+          </ul>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 font-bold font-ojuju text-vibrantGreen">
+            Location
+          </h2>
+          <p className="text-sm lg:text-lg font-jetbrains text-vibrantTextGreen leading-6 lg:leading-9">
+            {areaSummary}
+          </p>
+          <div className="flex flex-col lg:flex-row justify-between my-10">
+            {previousDetail ? (
+              <Link
+                to={`/${previousDetail.locationInfo
+                  .toLowerCase()
+                  .replace(/ /g, "-")}`}
+                state={{ image: previousDetail.image }}
+                className="text-lg sm:text-xl md:text-2xl mb-3 font-bold font-ojuju text-vibrantGreen"
+              >
+                PREVIOUS: {previousDetail.title}
+              </Link>
+            ) : (
+              <Link
+                to="/"
+                className="text-lg sm:text-xl md:text-2xl mb-3 font-bold font-ojuju text-vibrantGreen"
+              >
+                Back Home
+              </Link>
+            )}
+            {nextDetail ? (
+              <Link
+                to={`/${nextDetail.locationInfo
+                  .toLowerCase()
+                  .replace(/ /g, "-")}`}
+                state={{ image: nextDetail.image }}
+                className="text-lg sm:text-xl md:text-2xl mb-3 font-bold font-ojuju text-vibrantGreen"
+              >
+                NEXT: {nextDetail.title}
+              </Link>
+            ) : (
+              <Link
+                to="/"
+                className="text-lg sm:text-xl md:text-2xl mb-3 font-bold font-ojuju text-vibrantGreen"
+              >
+                Back Home
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </section>
