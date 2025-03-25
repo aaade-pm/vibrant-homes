@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import gsap from "gsap";
 
 type HomeData = {
   location: string;
@@ -59,9 +60,25 @@ const homes: HomeData[] = [
 ];
 
 const HomePage: React.FC = () => {
+  const contentRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!contentRef.current) return;
+    gsap.fromTo(
+      contentRef.current,
+      { y: 80, autoAlpha: 0 },
+      {
+        y: 0,
+        autoAlpha: 1,
+        duration: 0.9,
+        delay: 2.8,
+        ease: "power2.out",
+      }
+    );
+  }, []);
   return (
     <>
-      <main className="w-full">
+      <main ref={contentRef} className="w-full opacity-0">
         <section className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-12 py-6">
           {homes.map((home) => (
             <div
