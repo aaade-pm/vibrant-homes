@@ -71,7 +71,6 @@ const HomePage: React.FC = () => {
         y: 0,
         autoAlpha: 1,
         duration: 0.9,
-        delay: 2.8,
         ease: "power2.out",
       }
     );
